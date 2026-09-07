@@ -1,47 +1,131 @@
 <?php
 
-echo "<h1>Game Tebak Angka</h1>";
+session_start();
 
-$angka = rand(1, 50);
+if (!isset($_SESSION['angka'])) {
+    $_SESSION['angka'] = rand(1, 50);
+}
 
-echo "<p>Silakan masukkan angka 1 sampai 50.</p>";
+$angka = $_SESSION['angka'];
+
+$pesan = "";
 
 if (isset($_POST['tebak'])) {
 
-    $tebak = $_POST['tebak'];
-
-    echo "<p>Angka yang kamu tebak: $tebak</p>";
+    $tebak = (int) $_POST['tebak'];
 
     if ($tebak == $angka) {
-        echo "<p>🎉 Tebakan kamu benar!</p>";
+
+        $pesan = "🎉 Selamat! Tebakan kamu benar.";
+
     } elseif ($tebak < $angka) {
-        echo "<p>❌ Tebakan terlalu kecil!</p>";
+
+        $pesan = "❌ Tebakan terlalu kecil.";
+
     } else {
-        echo "<p>❌ Tebakan terlalu besar!</p>";
+
+        $pesan = "❌ Tebakan terlalu besar.";
+
     }
+}
+
+if (isset($_POST['reset'])) {
+
+    $_SESSION['angka'] = rand(1, 50);
+
+    $pesan = "";
+
 }
 
 ?>
 
-<style>
-body {
-    font-family: Arial;
-    text-align: center;
-    margin-top: 80px;
-}
+<!DOCTYPE html>
+<html>
+<head>
 
-input {
-    padding: 10px;
-    width: 150px;
-}
+    <title>Game Tebak Angka</title>
 
-button {
-    padding: 10px 20px;
-    cursor: pointer;
-}
-</style>
+    <style>
 
-<form method="post">
-    <input type="number" name="tebak" min="1" max="50" required>
-    <button type="submit">Tebak</button>
-</form>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 80px;
+            background-color: #f5f5f5;
+        }
+
+        .game {
+            background-color: white;
+            width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 10px;
+            width: 150px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .pesan {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="game">
+
+    <h1>🎮 Game Tebak Angka</h1>
+
+    <p>Tebak angka dari <b>1 sampai 50</b></p>
+
+    <?php if ($pesan != ""): ?>
+
+        <p class="pesan">
+            <?php echo htmlspecialchars($pesan); ?>
+        </p>
+
+    <?php endif; ?>
+
+    <form method="post">
+
+        <input
+            type="number"
+            name="tebak"
+            min="1"
+            max="50"
+            placeholder="Masukkan angka"
+            required
+        >
+
+        <br>
+
+        <button type="submit">
+            Tebak
+        </button>
+
+    </form>
+
+    <form method="post">
+
+        <button type="submit" name="reset">
+            Main Lagi
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
