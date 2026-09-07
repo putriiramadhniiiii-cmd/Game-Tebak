@@ -7,9 +7,14 @@ $angka = rand(1, 50);
 echo "<p>Silakan masukkan angka 1 sampai 50.</p>";
 
 if (isset($_POST['tebak'])) {
+
     $tebak = $_POST['tebak'];
 
     echo "<p>Angka yang kamu tebak: $tebak</p>";
+
+    if ($tebak == $angka) {
+        echo "<p>🎉 Tebakan kamu benar!</p>";
+    }
 }
 
 ?>
